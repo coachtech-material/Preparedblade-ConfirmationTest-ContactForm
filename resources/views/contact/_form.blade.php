@@ -165,6 +165,20 @@
     </div>
 </div>
 
+<!-- タグ -->
+<div class="grid grid-cols-3 gap-8 mb-4">
+    <div class="col-span-1 flex items-center">
+        <label class="text-sm text-[#6b5744]">
+            タグ
+        </label>
+    </div>
+    <div class="col-span-2">
+        <div id="tag-checkboxes" class="flex flex-wrap gap-4 py-3">
+            <!-- タグはJavaScriptで動的に読み込まれます -->
+        </div>
+    </div>
+</div>
+
 <!-- お問い合わせ内容 -->
 <div class="grid grid-cols-3 gap-8 mb-4">
     <div class="col-span-1 flex items-start pt-3">

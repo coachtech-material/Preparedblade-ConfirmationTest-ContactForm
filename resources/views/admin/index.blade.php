@@ -2,7 +2,8 @@
     <x-slot name="header">
         <form action="/logout" method="post">
             @csrf
-            <button class="px-5 py-1.5 border border-[#ddd8d3] text-[#c4bab0] bg-white rounded hover:bg-gray-50 transition lowercase text-sm">logout</button>
+            <button
+                class="px-5 py-1.5 border border-[#ddd8d3] text-[#c4bab0] bg-white rounded hover:bg-gray-50 transition lowercase text-sm">logout</button>
         </form>
     </x-slot>
 
@@ -50,6 +51,12 @@
                             リセット
                         </a>
                     </div>
+                    <div>
+                        <button id="export-btn" type="button"
+                            class="px-6 py-2 bg-amber-600 text-white rounded hover:bg-amber-700">
+                            エクスポート
+                        </button>
+                    </div>
                 </form>
             </div>
 
@@ -67,15 +74,59 @@
                             <th class="px-6 py-3 text-left text-sm font-medium text-white">性別</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-white">メールアドレス</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-white">お問い合わせの種類</th>
+                            <th class="px-6 py-3 text-left text-sm font-medium text-white">タグ</th>
                             <th class="px-6 py-3 text-left text-sm font-medium text-white"></th>
                         </tr>
                     </thead>
                     <tbody id="contacts-tbody" class="divide-y divide-gray-200">
                         <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">読み込み中...</td>
+                            <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">読み込み中...</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- タグ管理 -->
+            <div class="mt-12 bg-white rounded border border-gray-200 p-6">
+                <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+                    <h3 class="text-lg font-semibold text-[#6b5744]">タグ管理</h3>
+                    <p class="text-sm text-gray-500">問い合わせフォームで選択できるタグを追加・編集できます</p>
+                </div>
+
+                <form id="tag-form" class="bg-[#f9f6f2] rounded px-4 py-4">
+                    <label class="block text-sm text-[#6b5744] mb-2" for="tag-name-input">タグ名</label>
+                    <input type="text" id="tag-name-input" name="name" placeholder="例: 新機能の要望"
+                        class="w-full px-4 py-2 bg-white border border-[#ddd8d3] rounded text-gray-700 placeholder-[#c4bab0] focus:outline-none focus:border-amber-500" />
+                    <div id="tag-form-error" class="mt-2 text-sm text-red-600"></div>
+                    <div class="flex items-center gap-3 mt-4">
+                        <button type="submit" id="tag-submit-btn"
+                            class="px-6 py-2 bg-[#7d7470] text-white rounded hover:bg-[#6b5f57]">
+                            追加
+                        </button>
+                        <button type="button" id="tag-cancel-btn"
+                            class="px-4 py-2 text-[#7d7470] border border-[#ddd8d3] rounded hover:bg-gray-50 hidden">
+                            キャンセル
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-6 overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-[#f7f2ed] text-left">
+                                <th class="px-6 py-3 text-sm font-medium text-[#6b5744]">タグ名</th>
+                                <th class="px-6 py-3 text-sm font-medium text-[#6b5744] text-right">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tags-tbody">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    読み込み中...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
