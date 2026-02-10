@@ -4,11 +4,19 @@
 
 import { getUrlParams, buildUrlWithParams } from './url-params-manager.js';
 import { getGenderText } from './gender-helper.js';
+import { ContactsApi } from '../api/contacts.js';
 
 let setupDetailButtonsCallback = null;
 
 export function setDetailButtonCallback(callback) {
     setupDetailButtonsCallback = callback;
+}
+
+function formatTags(tags) {
+    if (!tags || tags.length === 0) return '';
+    return tags.map(tag =>
+        `<span class="inline-block px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded mr-1 mb-1">${tag.name}</span>`
+    ).join('');
 }
 
 function createContactRow(contact) {
@@ -18,6 +26,7 @@ function createContactRow(contact) {
             <td class="px-6 py-4 text-sm text-gray-700">${getGenderText(contact.gender)}</td>
             <td class="px-6 py-4 text-sm text-gray-700">${contact.email}</td>
             <td class="px-6 py-4 text-sm text-gray-700">${contact.category?.content || ''}</td>
+            <td class="px-6 py-4 text-sm text-gray-700">${formatTags(contact.tags)}</td>
             <td class="px-6 py-4 text-sm">
                 <button class="detail-button px-4 py-1 border border-[#ddd8d3] text-[#9a938c] bg-white rounded hover:bg-gray-50"
                     data-contact-id="${contact.id}">詳細</button>
@@ -46,14 +55,14 @@ export async function loadContacts() {
             if (!params[key]) delete params[key];
         });
 
-        const response = await Api.get('/contacts', params);
+        const response = await ContactsApi.getContacts(params);
         const contacts = response.data || response;
         const paginationLinks = response.meta?.links || response.links || null;
 
         if (!Array.isArray(contacts) || contacts.length === 0) {
             contactsTbody.innerHTML = `
                 <tr>
-                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">データがありません</td>
+                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">データがありません</td>
                 </tr>
             `;
         } else {
@@ -88,7 +97,7 @@ export async function loadContacts() {
         console.error('Error loading contacts:', error);
         contactsTbody.innerHTML = `
             <tr>
-                <td colspan="5" class="px-6 py-4 text-center text-sm text-red-600">データの読み込みに失敗しました</td>
+                <td colspan="6" class="px-6 py-4 text-center text-sm text-red-600">データの読み込みに失敗しました</td>
             </tr>
         `;
     }

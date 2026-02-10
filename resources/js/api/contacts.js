@@ -6,19 +6,20 @@ import { ApiBase } from './base.js';
 
 export const ContactsApi = {
     async getContacts(params = {}) {
-        return ApiBase.get('/contacts', params);
+        const response = await ApiBase.get('/contacts', params);
+        return response;
     },
 
     async getContact(id) {
         const response = await ApiBase.get(`/contacts/${id}`);
-        return response.data || response;
+        return response.data;
     },
 
     async createContact(data) {
-        return ApiBase.post('/contacts', data);
+        await ApiBase.post('/contacts', data);
     },
 
     async deleteContact(id) {
-        return ApiBase.delete(`/contacts/${id}`);
+        await ApiBase.delete(`/contacts/${id}`);
     },
 };

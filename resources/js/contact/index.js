@@ -4,13 +4,16 @@
 
 import { initPhoneField } from './phone-field-handler.js';
 import { initCategorySelect } from './category-select-loader.js';
+import { initTagSelect } from './tag-select-loader.js';
 import { ContactsApi } from '../api/contacts.js';
 import { CategoriesApi } from '../api/categories.js';
+import { TagsApi } from '../api/tags.js';
 import { getValidationMessage } from '../validation-messages.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     initPhoneField();
     initCategorySelect();
+    initTagSelect();
     initFormValidation();
     initConfirmSection();
 });
@@ -311,6 +314,26 @@ async function showConfirmSection(formData) {
     }
     
     document.getElementById('confirm-category').textContent = categoryName;
+
+    // タグ名を取得して表示
+    const tagIds = formData.getAll('tag_ids[]');
+    const tagsRow = document.getElementById('confirm-tags-row');
+    if (tagIds.length > 0) {
+        try {
+            const tags = await TagsApi.getTags();
+            const selectedTagNames = tags
+                .filter(tag => tagIds.includes(String(tag.id)))
+                .map(tag => tag.name);
+            document.getElementById('confirm-tags').textContent = selectedTagNames.join(', ');
+            tagsRow.classList.remove('hidden');
+        } catch (error) {
+            console.error('タグの取得に失敗しました:', error);
+            tagsRow.classList.add('hidden');
+        }
+    } else {
+        tagsRow.classList.add('hidden');
+    }
+
     document.getElementById('confirm-detail').textContent = formData.get('detail');
 
     // 表示切り替え
@@ -360,6 +383,7 @@ function initConfirmSection() {
             const tel = getCombinedTel(formData);
 
             // 送信用データを準備
+            const tagIds = formData.getAll('tag_ids[]').map(id => parseInt(id));
             const data = {
                 first_name: formData.get('first_name'),
                 last_name: formData.get('last_name'),
@@ -369,6 +393,7 @@ function initConfirmSection() {
                 address: formData.get('address'),
                 building: formData.get('building') || '',
                 category_id: parseInt(formData.get('category_id')),
+                tag_ids: tagIds,
                 detail: formData.get('detail')
             };
 

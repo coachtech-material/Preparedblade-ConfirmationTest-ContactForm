@@ -7,6 +7,8 @@ import { loadCategories } from './category-select-loader.js';
 import { loadContacts, setDetailButtonCallback } from './contact-list-renderer.js';
 import { setupDetailButtons, initModal } from './contact-detail-modal.js';
 import { initSearchForm } from './search-form-handler.js';
+import { initExport } from './export-handler.js';
+import { initTagManagement } from './tag-management.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     const currentParams = getUrlParams();
@@ -16,6 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     initModal();
     initSearchForm();
+    initExport();
+    initTagManagement();
 
     loadCategories();
     loadContacts();

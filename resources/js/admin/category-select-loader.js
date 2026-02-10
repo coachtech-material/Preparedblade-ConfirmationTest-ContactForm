@@ -3,6 +3,7 @@
  */
 
 import { getUrlParams } from './url-params-manager.js';
+import { CategoriesApi } from '../api/categories.js';
 
 export async function loadCategories() {
     const categorySelect = document.getElementById('category-select');
@@ -11,7 +12,7 @@ export async function loadCategories() {
     const currentParams = getUrlParams();
 
     try {
-        const categories = await Api.getCategories();
+        const categories = await CategoriesApi.getCategories();
         if (!Array.isArray(categories) || categories.length === 0) return;
 
         categories.forEach(category => {
