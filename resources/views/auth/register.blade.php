@@ -3,7 +3,7 @@
         <div class="w-full max-w-md">
             <h1 class="text-3xl font-serif text-amber-900 text-center mb-6">{{ __('Register') }}</h1>
             <div class="bg-white rounded-lg shadow-sm">
-                <form method="POST" action="{{ route('register') }}" class="px-8 py-8">
+                <form method="POST" action="{{ route('register') }}" class="px-8 py-8" novalidate>
                     @csrf
 
                     <!-- Name -->
@@ -57,6 +57,16 @@
                                 @endforeach
                             </ul>
                         @endif
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mt-4">
+                        <label for="password_confirmation" class="block font-medium text-sm text-amber-900">
+                            {{ __('パスワード確認') }}
+                        </label>
+                        <input id="password_confirmation"
+                            class="block mt-1 w-full border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-300 focus:border-amber-500 focus:ring-amber-500 rounded-md shadow-sm px-3 py-2"
+                            type="password" name="password_confirmation" placeholder="password" required />
                     </div>
 
                     <div class="flex items-center justify-center mt-6">
