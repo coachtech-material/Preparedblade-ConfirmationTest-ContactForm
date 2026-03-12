@@ -163,6 +163,9 @@
                                                 更新
                                             </button>
                                         </form>
+                                        @error('name')
+                                            <div class="mt-1 text-sm text-red-600">{{ $message }}</div>
+                                        @enderror
                                     </td>
                                     <td class="px-6 py-3 text-sm text-right">
                                         <form action="/admin/tags/{{ $tag->id }}" method="post" class="inline">
