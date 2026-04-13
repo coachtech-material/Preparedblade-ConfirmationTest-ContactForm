@@ -33,17 +33,17 @@
     <div class="col-span-2">
         <div class="flex gap-8 py-3">
             <label class="flex items-center cursor-pointer">
-                <input type="radio" name="gender" value="1" {{ old('gender', '1') == '1' ? 'checked' : '' }}
+                <input type="radio" name="gender" value="1" {{ old('gender') == '1' ? 'checked' : '' }}
                     class="w-4 h-4 text-[#6b5744] border-gray-300 focus:ring-[#6b5744]" />
                 <span class="ml-2 text-gray-700">男性</span>
             </label>
             <label class="flex items-center cursor-pointer">
-                <input type="radio" name="gender" value="2" {{ old('gender', '1') == '2' ? 'checked' : '' }}
+                <input type="radio" name="gender" value="2" {{ old('gender') == '2' ? 'checked' : '' }}
                     class="w-4 h-4 text-[#6b5744] border-gray-300 focus:ring-[#6b5744]" />
                 <span class="ml-2 text-gray-700">女性</span>
             </label>
             <label class="flex items-center cursor-pointer">
-                <input type="radio" name="gender" value="3" {{ old('gender', '1') == '3' ? 'checked' : '' }}
+                <input type="radio" name="gender" value="3" {{ old('gender') == '3' ? 'checked' : '' }}
                     class="w-4 h-4 text-[#6b5744] border-gray-300 focus:ring-[#6b5744]" />
                 <span class="ml-2 text-gray-700">その他</span>
             </label>
@@ -149,9 +149,14 @@
     </div>
     <div class="col-span-2">
         <div class="relative">
-            <select name="category_id" id="category-select" data-old-value="{{ old('category_id') }}"
+            <select name="category_id" id="category-select"
                 class="w-full px-4 py-3 bg-[#f5f5f5] border-0 text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-300 appearance-none cursor-pointer">
                 <option value="" disabled {{ old('category_id') == '' ? 'selected' : '' }}>選択してください</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                        {{ $category->content }}
+                    </option>
+                @endforeach
             </select>
             <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
                 <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -166,6 +171,7 @@
 </div>
 
 <!-- タグ -->
+@isset($tags)
 <div class="grid grid-cols-3 gap-8 mb-4">
     <div class="col-span-1 flex items-center">
         <label class="text-sm text-[#6b5744]">
@@ -173,11 +179,19 @@
         </label>
     </div>
     <div class="col-span-2">
-        <div id="tag-checkboxes" class="flex flex-wrap gap-4 py-3">
-            <!-- タグはJavaScriptで動的に読み込まれます -->
+        <div class="flex flex-wrap gap-4 py-3">
+            @foreach ($tags as $tag)
+                <label class="flex items-center cursor-pointer">
+                    <input type="checkbox" name="tag_ids[]" value="{{ $tag->id }}"
+                        {{ in_array($tag->id, old('tag_ids', [])) ? 'checked' : '' }}
+                        class="w-4 h-4 text-[#6b5744] border-gray-300 focus:ring-[#6b5744]" />
+                    <span class="ml-2 text-gray-700">{{ $tag->name }}</span>
+                </label>
+            @endforeach
         </div>
     </div>
 </div>
+@endisset
 
 <!-- お問い合わせ内容 -->
 <div class="grid grid-cols-3 gap-8 mb-4">
